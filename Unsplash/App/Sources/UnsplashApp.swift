@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import BasicSwiftUI
 
 @main
 struct UnsplashApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TestView()
         }
     }
 }

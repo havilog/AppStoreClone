@@ -8,6 +8,8 @@ let project = Project.project(
     name: projectName,
     organizationName: organizationName,
     product: .app,
-    dependencies: [], // default 
+    dependencies: [
+        .BasicSwiftUI
+    ], 
     schemes: []
 )

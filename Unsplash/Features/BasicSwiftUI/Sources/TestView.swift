@@ -7,16 +7,18 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
+public struct TestView: View {
+    public var body: some View {
+        Text("This is test view")
             .padding()
             .edgesIgnoringSafeArea(.all)
     }
+    
+    public init() { }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        TestView()
     }
 }
