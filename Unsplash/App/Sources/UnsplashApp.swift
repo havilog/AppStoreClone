@@ -12,7 +12,7 @@ import BasicSwiftUI
 struct UnsplashApp: App {
     var body: some Scene {
         WindowGroup {
-            TestView()
+            MainTabView()
         }
     }
 }
