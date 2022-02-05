@@ -9,12 +9,10 @@ import SwiftUI
 
 public struct MainTabView: View {
     
-    @State private var selection = 1
+    @State private var selection = 0
     
     public init() {
-        UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().backgroundColor = .black
-        UITabBar.appearance().unselectedItemTintColor = .gray
+        configureTabBarAppearance()
     }
     
     public var body: some View {
@@ -22,13 +20,18 @@ public struct MainTabView: View {
             PhotoListView()
                 .tabItem { Image(systemName: "photo") }
                 .tag(0)
-                .navigationTitle("Unsplash")
             
             PhotoSearchView()
                 .tabItem { Image(systemName: "magnifyingglass") }
                 .tag(1)
         }
         .accentColor(.white)
+    }
+    
+    private func configureTabBarAppearance() {
+        UITabBar.appearance().isTranslucent = false
+        UITabBar.appearance().backgroundColor = .black
+        UITabBar.appearance().unselectedItemTintColor = .gray
     }
 }
 
