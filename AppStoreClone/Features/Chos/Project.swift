@@ -9,8 +9,8 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-    name: "BasicSwiftUI",
+    name: "Chos",
     dependencies: [
-        .Network
+        .ThirdPartyManager
     ]
 )

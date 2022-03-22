@@ -1,7 +1,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let projectName: String = "Unsplash"
+let projectName: String = "AppStoreClone"
 let organizationName: String = "havi"
 
 let project = Project.project(
@@ -9,7 +9,9 @@ let project = Project.project(
     organizationName: organizationName,
     product: .app,
     dependencies: [
-        .BasicSwiftUI
+        .Havi,
+        .Chos,
+        .Heizel
     ], 
     schemes: []
 )

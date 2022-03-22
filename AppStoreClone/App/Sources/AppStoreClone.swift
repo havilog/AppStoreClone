@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-import BasicSwiftUI
+import Havi
+import Heizel
+import Chos
 
 @main
-struct UnsplashApp: App {
+struct AppStoreClone: App {
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            Test()
         }
     }
 }

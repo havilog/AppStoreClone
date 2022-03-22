@@ -1,6 +1,6 @@
 import ProjectDescription
 
 let workspace = Workspace(
-    name: "Unsplash",
-    projects: ["Unsplash/App"]
+    name: "AppStoreClone",
+    projects: ["AppStoreClone/App"]
 )

@@ -1,13 +1,23 @@
 import ProjectDescription
 
 public extension TargetDependency {
-    static let BasicSwiftUI: TargetDependency = .project(
-        target: "BasicSwiftUI", 
-        path: .relativeToRoot("Unsplash/Features/BasicSwiftUI")
+    static let Chos: TargetDependency = .project(
+        target: "Chos", 
+        path: .relativeToRoot("AppStoreClone/Features/Chos")
     )
     
-    static let Network: TargetDependency = .project(
-        target: "Network", 
-        path: .relativeToRoot("Unsplash/Modules/Network")
+    static let Heizel: TargetDependency = .project(
+        target: "Heizel", 
+        path: .relativeToRoot("AppStoreClone/Features/Heizel")
+    )
+    
+    static let Havi: TargetDependency = .project(
+        target: "Havi", 
+        path: .relativeToRoot("AppStoreClone/Features/Havi")
+    )
+    
+    static let ThirdPartyManager: TargetDependency = .project(
+        target: "ThirdPartyManager", 
+        path: .relativeToRoot("AppStoreClone/Modules/ThirdPartyManager")
     )
 }
