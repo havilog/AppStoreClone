@@ -11,9 +11,11 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
     name: "ThirdPartyManager",
     packages: [
-        .Moya
+        .Moya,
+        .TCA
     ],
     dependencies: [
-        .SPM.Moya
+        .SPM.Moya,
+        .SPM.TCA
     ]
 )
