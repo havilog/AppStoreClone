@@ -27,10 +27,10 @@ extension TargetDependency {
 // dependencies
 public extension TargetDependency.SPM {
     static let Moya = TargetDependency.package(product: "Moya")
-    static let TCA = TargetDependency.package(product: "TCA")
+    static let ComposableArchitecture = TargetDependency.package(product: "ComposableArchitecture")
 }
 
 public extension Package {
     static let Moya = Package.remote(url: "https://github.com/Moya/Moya", requirement: .exact("14.0.0"))
-    static let TCA = Package.remote(url: "https://github.com/pointfreeco/swift-composable-architecture", requirement: .exact("0.34.0"))
+    static let ComposableArchitecture = Package.remote(url: "https://github.com/pointfreeco/swift-composable-architecture", requirement: .exact("0.34.0"))
 }

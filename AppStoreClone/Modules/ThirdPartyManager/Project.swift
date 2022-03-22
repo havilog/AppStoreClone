@@ -12,10 +12,10 @@ let project = Project.framework(
     name: "ThirdPartyManager",
     packages: [
         .Moya,
-        .TCA
+        .ComposableArchitecture
     ],
     dependencies: [
         .SPM.Moya,
-        .SPM.TCA
+        .SPM.ComposableArchitecture
     ]
 )
