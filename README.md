@@ -1,7 +1,21 @@
-# Unsplash
+# AppStoreClone
 
-Unsplash API를 이용해 프로젝트를 해보자
+AppStore의 검색 화면을 SwiftUI, Combine, TCA, async/await를 활용하여 구현해보자
 
-1. SwiftUI만 사용해서 rough하게 구현 - 진행 중
-2. 1번을 combine을 사용하여 1번을 develop
-3. TCA(The Composable Architecture)를 사용하여 2번을 develop
+Swift version: 5.5
+Xcode version: ??
+tuist version: 2.7.0
+
+## 실행 방법
+
+1. tuist가 설치가 안되어있다면 다음 명령어로 tuist 설치
+
+```
+curl -Ls https://install.tuist.io | bash
+```
+
+2. tuist generate로 프로젝트 파일 생성
+
+## 요구사항
+
+1. 나중에 쓰자~~
