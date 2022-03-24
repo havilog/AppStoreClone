@@ -11,6 +11,6 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
     name: "Chos",
     dependencies: [
-        .ThirdPartyManager
+        .Core
     ]
 )

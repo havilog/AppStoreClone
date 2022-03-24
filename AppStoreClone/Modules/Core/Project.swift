@@ -9,8 +9,8 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-    name: "Havi",
+    name: "Core",
     dependencies: [
-        .Core
+        .ThirdPartyManager
     ]
 )

@@ -11,6 +11,6 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
     name: "Heizel",
     dependencies: [
-        .ThirdPartyManager
+        .Core
     ]
 )

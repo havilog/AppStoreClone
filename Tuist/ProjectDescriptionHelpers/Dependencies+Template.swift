@@ -16,6 +16,11 @@ public extension TargetDependency {
         path: .relativeToRoot("AppStoreClone/Features/Havi")
     )
     
+    static let Core: TargetDependency = .project(
+        target: "Core", 
+        path: .relativeToRoot("AppStoreClone/Modules/Core")
+    )
+    
     static let ThirdPartyManager: TargetDependency = .project(
         target: "ThirdPartyManager", 
         path: .relativeToRoot("AppStoreClone/Modules/ThirdPartyManager")
