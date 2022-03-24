@@ -31,6 +31,6 @@ public extension TargetDependency.SPM {
 }
 
 public extension Package {
-    static let Moya = Package.remote(url: "https://github.com/Moya/Moya", requirement: .exact("14.0.0"))
+    static let Moya = Package.remote(url: "https://github.com/Moya/Moya", requirement: .exact("15.0.0"))
     static let ComposableArchitecture = Package.remote(url: "https://github.com/pointfreeco/swift-composable-architecture", requirement: .exact("0.34.0"))
 }

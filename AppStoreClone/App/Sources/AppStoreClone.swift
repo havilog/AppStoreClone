@@ -6,15 +6,12 @@
 //
 
 import SwiftUI
-import Havi
-import Heizel
-import Chos
 
 @main
 struct AppStoreClone: App {
     var body: some Scene {
         WindowGroup {
-            Test()
+            TabView()
         }
     }
 }
