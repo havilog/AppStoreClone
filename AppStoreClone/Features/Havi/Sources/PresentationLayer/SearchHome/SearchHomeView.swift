@@ -8,18 +8,19 @@
 
 import SwiftUI
 
-public struct Test: View {
-    public var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+public struct SearchHomeView: View {
     
     public init() {
         
     }
+    
+    public var body: some View {
+        Text("Hello, World!")
+    }
 } 
 
-struct Test_Previews: PreviewProvider {
+struct SearchHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        Test()
+        SearchHomeView()
     }
 }
