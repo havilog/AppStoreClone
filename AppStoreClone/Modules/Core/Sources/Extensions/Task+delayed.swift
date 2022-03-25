@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Task where Failure == Error {
+public extension Task where Failure == Error {
     static func delayed(
         byTimeInterval delayInterval: TimeInterval,
         priority: TaskPriority? = nil,

@@ -8,7 +8,7 @@
 
 import Combine
 
-extension PassthroughSubject where Failure == Error {
+public extension PassthroughSubject where Failure == Error {
     static func emittingValues<T: AsyncSequence>(
         from sequence: T
     ) -> Self where T.Element == Output {

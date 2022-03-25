@@ -8,6 +8,8 @@
 
 import Foundation
 
+import Core
+
 public protocol NetworkRepository {
     func reqeust<Model: Decodable>(
         with endpoint: EndpointType, 
@@ -44,7 +46,9 @@ public struct NetworkRepositoryImpl: NetworkRepository {
     
     private func request(with urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         do {
-            return try await session.data(for: urlRequest, delegate: nil)
+            return try await Task.retrying { 
+                return try await session.data(for: urlRequest, delegate: nil)
+            }.value
         } catch {
             throw NetworkError.dataTaskFailed
         }
