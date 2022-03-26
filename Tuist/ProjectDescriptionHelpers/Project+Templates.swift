@@ -82,6 +82,7 @@ public extension Project {
             .developmentTeam: "85329TR25G",
             .codeSigningRequired: "NO",
             .swiftVersion: "5.4.2",
+            .enableTestability: "YES"
         ]
         
         customSettings.forEach {

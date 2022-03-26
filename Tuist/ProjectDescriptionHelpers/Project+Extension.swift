@@ -17,6 +17,7 @@ public extension String {
     static let provisioningProfileSpecifier = "PROVISIONING_PROFILE_SPECIFIER"
     static let swiftVersion = "SWIFT_VERSION"
     static let developmentAssetPaths = "DEVELOPMENT_ASSET_PATHS"
+    static let enableTestability = "ENABLE_TESTABILITY"
 }
 
 extension TargetDependency {
