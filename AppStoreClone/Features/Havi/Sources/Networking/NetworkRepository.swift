@@ -25,18 +25,19 @@ public struct NetworkRepositoryImpl: NetworkRepository {
         self.session = session
     }
     
+    // endpoint에서 모델 지정
     public func reqeust<Model: Decodable>(
         with endpoint: EndpointType, 
         for type: Model.Type
     ) async throws -> Model {
-        let urlRequest: URLRequest = try makeURLRequset(with: endpoint)
+        let urlRequest: URLRequest = try makeURLRequest(with: endpoint)
         let (data, response) = try await request(with: urlRequest)
         try validateReponse(response)
         let model = try decodeModel(from: data, modelType: Model.self)
         return model
     }
     
-    private func makeURLRequset(with endpoint: EndpointType) throws -> URLRequest {
+    private func makeURLRequest(with endpoint: EndpointType) throws -> URLRequest {
         do {
             return try endpoint.asURLRequest()    
         } catch {
