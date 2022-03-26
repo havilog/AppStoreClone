@@ -121,6 +121,7 @@ public extension Project {
             deploymentTarget: deploymentTarget,
             infoPlist: .default,
             sources: ["Tests/**"],
+            resources: ["Tests/**"],
             dependencies: [.target(name: name)]
         )
         
