@@ -57,12 +57,12 @@ public protocol EndpointType {
 // MARK: Endpoint
 
 public enum Endpoint {
-    case readCarrots
+    case searchApp(term: String)
 }
-
+//https://itunes.apple.com/search?entity=software&term=kakao&country=kr
 extension Endpoint: EndpointType {
     public var baseURL: URL {
-        guard let baseURL = URL(string: "http://carrot.mock.com") 
+        guard let baseURL = URL(string: "https://itunes.apple.com") 
         else { fatalError("잘못된 baseURL") }
         
         return baseURL
@@ -70,22 +70,26 @@ extension Endpoint: EndpointType {
     
     public var path: String? {
         switch self {
-        case .readCarrots:
-            return "/some/path/"
+        case .searchApp:
+            return "/search"
         }
     }
     
     public var httpMethod: HTTPMethod {
         switch self {
-        case .readCarrots:
+        case .searchApp:
             return .get
         }
     }
     
     public var task: HTTPTask {
         switch self {
-        case .readCarrots:
-            return .requestPlain
+        case let .searchApp(term):
+            return .requestHeader(urlParams: [
+                "entity": "software",
+                "country": "kr",
+                "term": term
+            ])
         }
     }
     
