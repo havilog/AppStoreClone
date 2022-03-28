@@ -12,9 +12,14 @@ import Havi
 final class URLSessionMock: URLSessionProtocol {
     
     var shouldDataTaskSucceed: Bool
+    var isFirstTryFail: Bool = false
     
-    init(shouldDataTaskSucceed: Bool) {
+    init(
+        shouldDataTaskSucceed: Bool, 
+        isFirstTryFail: Bool
+    ) {
         self.shouldDataTaskSucceed = shouldDataTaskSucceed
+        self.isFirstTryFail = isFirstTryFail
     }
     
     func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
@@ -39,11 +44,15 @@ final class URLSessionMock: URLSessionProtocol {
         
         if shouldDataTaskSucceed {
             let component = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)!
-            if component.queryItems!.contains(where: { $0.value == "카카오" }) {
-                let data = readLocalFile(forName: "appInfoListKakaoBank")!
-                return (data, successResponse)
+            if isFirstTryFail {
+                throw NetworkError.dataTaskFailed
             } else {
-                return (.init(), successResponse)
+                if component.queryItems!.contains(where: { $0.value == "카카오" }) {
+                    let data = readLocalFile(forName: "appInfoListKakaoBank")!
+                    return (data, successResponse)
+                } else {
+                    return (.init(), successResponse)
+                }    
             }
         } else {
             return (.init(), failureResponse)

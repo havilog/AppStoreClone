@@ -16,7 +16,11 @@ class NetworkRepositoryTests: XCTestCase {
     var urlSessionMock: URLSessionProtocol!
     
     override func setUpWithError() throws {
-        sut = NetworkRepositoryImpl(with: URLSessionMock(shouldDataTaskSucceed: true))
+        urlSessionMock = URLSessionMock(
+            shouldDataTaskSucceed: true,
+            isFirstTryFail: false
+        )
+        sut = NetworkRepositoryImpl(with: urlSessionMock)
     }
     
     override func tearDownWithError() throws {
@@ -76,6 +80,26 @@ extension NetworkRepositoryTests {
             // then
             XCTAssertEqual(error as! NetworkError, NetworkError.unableToDecode)
         }        
+    }
+    
+    func test_첫_시도가_실패해도_retry에서_성공() async throws {
+        //given
+        sut = NetworkRepositoryImpl(
+            with: URLSessionMock(
+                shouldDataTaskSucceed: true, 
+                isFirstTryFail: true
+            )
+        )
+        let endpoint = Endpoint.searchApp(term: "카카오")
+        let data = readLocalFile(forName: "appInfoListKakaoBank")!
+        let mockResult = try! JSONDecoder().decode(SearchAPIResult.self, from: data)
+        
+        //when
+        let result = try await sut.reqeust(with: endpoint, for: SearchAPIResult.self)
+        
+        //then
+        XCTAssertEqual(result, mockResult)
+        
     }
 }
 

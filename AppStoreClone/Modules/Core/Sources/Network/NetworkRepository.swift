@@ -8,8 +8,6 @@
 
 import Foundation
 
-import Core
-
 public protocol NetworkRepository {
     func reqeust<Model: Decodable>(
         with endpoint: EndpointType, 
