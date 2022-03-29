@@ -11,7 +11,7 @@ import SwiftUI
 struct AppStoreClone: App {
     var body: some Scene {
         WindowGroup {
-            TabView()
+            MainTabView()
         }
     }
 }
