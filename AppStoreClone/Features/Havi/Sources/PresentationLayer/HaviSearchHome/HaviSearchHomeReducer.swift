@@ -12,6 +12,10 @@ import ComposableArchitecture
 let HaviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAction, HaviSearchHomeEnvironment>.combine(
     Reducer { state, action, environment in
         switch action {
+        case let .searchButtonTapped(keyword):
+            return .none
+        case let .searchKeywordChanged(keyword):
+            return .none
         }
     }
 )

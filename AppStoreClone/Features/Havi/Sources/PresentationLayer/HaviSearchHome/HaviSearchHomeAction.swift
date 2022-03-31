@@ -10,4 +10,6 @@ import ThirdPartyManager
 import ComposableArchitecture
 
 enum HaviSearchHomeAction: Equatable {
+    case searchKeywordChanged(keyword: String)
+    case searchButtonTapped(keyword: String)
 }

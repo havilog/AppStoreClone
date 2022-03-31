@@ -6,8 +6,14 @@
 //  Copyright © 2022 havi. All rights reserved.
 //
 
+import Core
 import ThirdPartyManager
 import ComposableArchitecture
 
-struct HaviSearchHomeEnvironment: Equatable {
+struct HaviSearchHomeEnvironment {
+    let network: NetworkRepository
+    
+    init(network: NetworkRepository) {
+        self.network = network
+    }
 }
