@@ -13,17 +13,32 @@ import ComposableArchitecture
 
 public struct HaviSearchHomeView: View {
     
-    public init() {
-        
+    @State var searchQuery = ""
+    
+    public let store: Store<HaviSearchHomeState, HaviSearchHomeAction>
+    
+    public init(store: Store<HaviSearchHomeState, HaviSearchHomeAction>) {
+        self.store = store
     }
     
     public var body: some View {
-        Text("Hello, Havi!")
+        WithViewStore(self.store) { viewStore in
+            NavigationView {
+                VStack {
+                    Text("Hello, Havi!")
+                }
+                .navigationTitle("검색")
+            }
+            .searchable(text: $searchQuery)
+            .onSubmit(of: .search) {
+                viewStore.send(.searchButtonTapped(keyword: searchQuery))
+            }
+        }
     }
 } 
 
-struct HaviSearchHomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HaviSearchHomeView()
-    }
-}
+//struct HaviSearchHomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HaviSearchHomeView()
+//    }
+//}

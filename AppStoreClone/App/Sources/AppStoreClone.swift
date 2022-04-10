@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct AppStoreClone: App {
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            MainTabView(
+                store: Store(
+                    initialState: MainTabState(),
+                    reducer: MainTabReducer,
+                    environment: .live(environment: MainTabEnvironment())
+                )
+            )
         }
     }
 }

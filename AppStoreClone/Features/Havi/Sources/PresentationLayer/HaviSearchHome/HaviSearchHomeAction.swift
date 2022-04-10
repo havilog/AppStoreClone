@@ -6,10 +6,13 @@
 //  Copyright © 2022 havi. All rights reserved.
 //
 
+import Core
 import ThirdPartyManager
 import ComposableArchitecture
 
-enum HaviSearchHomeAction: Equatable {
-    case searchKeywordChanged(keyword: String)
+import Core
+
+public enum HaviSearchHomeAction: Equatable {
     case searchButtonTapped(keyword: String)
+    case searchDataLoaded(Result<SearchAPIResult, NetworkError>)
 }

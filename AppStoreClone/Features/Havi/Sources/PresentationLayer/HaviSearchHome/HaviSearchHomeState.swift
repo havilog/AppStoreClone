@@ -6,8 +6,13 @@
 //  Copyright © 2022 havi. All rights reserved.
 //
 
+import SwiftUI
+
 import ThirdPartyManager
 import ComposableArchitecture
 
-struct HaviSearchHomeState: Equatable {
+public struct HaviSearchHomeState: Equatable {
+    var searchModel: SearchAPIResult?
+    
+    public init() { }
 }

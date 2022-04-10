@@ -6,14 +6,31 @@
 //  Copyright © 2022 havi. All rights reserved.
 //
 
+import Foundation
+import Combine
+
 import Core
 import ThirdPartyManager
 import ComposableArchitecture
 
-struct HaviSearchHomeEnvironment {
-    let network: NetworkRepository
+public struct HaviSearchHomeEnvironment {
     
-    init(network: NetworkRepository) {
+    public let network: NetworkRepository
+    
+    public init(network: NetworkRepository) {
         self.network = network
+    }
+    
+    public func searchRequest(
+        term: String,
+        decoder: JSONDecoder
+    ) -> Effect<SearchAPIResult, NetworkError> {
+        return URLSession.shared
+            .dataTaskPublisher(for: try! Endpoint.searchApp(term: term).asURLRequest())
+            .mapError { _ in NetworkError.dataTaskFailed }
+            .map { data, _ in data }
+            .decode(type: SearchAPIResult.self, decoder: decoder)
+            .mapError { _ in NetworkError.unableToDecode }
+            .eraseToEffect()
     }
 }
