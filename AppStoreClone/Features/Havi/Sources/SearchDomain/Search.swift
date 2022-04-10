@@ -26,7 +26,7 @@ extension SearchAPIResult {
         public let averageUserRatingForCurrentVersion: Double // - 이 버전에 대한평점 0.0~5.0
         public let contentAdvisoryRating: String // - 연령등급
         public let userRatingCount: Int // - 평가 개수 - 1000단위로 반올림 예상, n.n만개 등으로 포매팅 필요
-        public let releaseNotes: String // - 릴리즈노트 - 기본 세줄  + 더보기 - 클릭시 펼쳐짐
+        public let releaseNotes: String? // - 릴리즈노트 - 기본 세줄  + 더보기 - 클릭시 펼쳐짐
         public let price: Int // 가격
         public let formattedPrice: String // 포맷가격
     }

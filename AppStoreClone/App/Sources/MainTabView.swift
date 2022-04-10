@@ -7,16 +7,26 @@
 //
 
 import SwiftUI
+
 import Havi
 import Heizel
 import Chos
+import Core
+import ThirdPartyManager
+
+import ComposableArchitecture
 
 struct MainTabView: View {
+    
+    let store: Store<MainTabState, MainTabAction>
+    
     var body: some View {
-        TabView {
-            ChosTab
-            HaviTab
-            HeizelTab
+        WithViewStore(self.store.stateless) { _ in
+            TabView {
+                ChosTab
+                HaviTab
+                HeizelTab
+            }    
         }
     }
     
@@ -29,7 +39,12 @@ struct MainTabView: View {
     }
     
     private var HaviTab: some View {
-        HaviSearchHomeView()
+        HaviSearchHomeView(
+            store: store.scope(
+                state: \.haviSearchState, 
+                action: MainTabAction.haviAction
+            )
+        )
             .tabItem { 
                 Image(systemName: "magnifyingglass")
                 Text("Havi")
@@ -45,8 +60,13 @@ struct MainTabView: View {
     }
 }
 
-struct TabView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainTabView()
-    }
-}
+//struct TabView_Previews: PreviewProvider {
+//    static var previews: some View {        MainTabView(
+//            store: .init(
+//                initialState: .init(), 
+//                reducer: MainTabReducer, 
+//                environment: .init()
+//            )
+//        )
+//    }
+//}
