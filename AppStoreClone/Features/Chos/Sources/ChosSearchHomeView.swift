@@ -7,20 +7,43 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 public struct ChosSearchHomeView: View {
-    
-    public init() {
-        
-    }
-    
-    public var body: some View {
-        Text("Hello, Chos!")
-    }
-} 
+  let store: Store<SearchState, SearchAction>
 
-struct ChosSearchHomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChosSearchHomeView()
+  public var body: some View {
+    WithViewStore(self.store) { viewStore in
+      NavigationView {
+        VStack {
+          HStack {
+            Text("검색")
+              .font(.largeTitle)
+
+            Spacer()
+          }
+          SearchBar(text: viewStore.binding(get: \.searchKeyword,
+                                            send: SearchAction.onSearchKeyword("")))
+
+          if !viewStore.recentlyKeyword.isEmpty {
+            List(viewStore.recentlyKeyword) { keyword in
+              Text(keyword)
+            }
+          }
+        }
+      }
     }
+    Text("Hello, Chos!")
+  }
 }
+
+//extension ChosSearchHomeView {
+//  @ViewBuilder
+//  func
+//}
+
+//struct ChosSearchHomeView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    ChosSearchHomeView()
+//  }
+//}
