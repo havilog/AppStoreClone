@@ -10,9 +10,11 @@ import ThirdPartyManager
 import ComposableArchitecture
 
 import Havi
+import Chos
 
 enum MainTabAction: Equatable {
     case haviAction(HaviSearchHomeAction)
+    case chosAction(ChosSearchAction)
     // chosAction
     // heizelAction
 }

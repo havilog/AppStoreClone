@@ -31,7 +31,12 @@ struct MainTabView: View {
     }
     
     private var ChosTab: some View {
-        ChosSearchHomeView()
+        ChosSearchHomeView(
+          store: store.scope(
+            state: \.chosSearchState,
+            action: MainTabAction.chosAction
+            )
+        )
             .tabItem { 
                 Image(systemName: "magnifyingglass")
                 Text("Chos")

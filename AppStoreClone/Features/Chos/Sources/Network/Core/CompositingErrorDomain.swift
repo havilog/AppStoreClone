@@ -32,7 +32,13 @@ public enum CompositingErrorDomain: Error {
   }
 }
 
-public struct RemoteErrorDomain: Decodable {
+extension CompositingErrorDomain: Equatable {
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.displayMessage == rhs.displayMessage
+  }
+}
+
+public struct RemoteErrorDomain: Decodable, Equatable {
   public init(code: Int?, message: String?) {
     self.code = code
     self.message = message

@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 import Havi
 import Core
+import Chos
 
 let MainTabReducer = Reducer<
     MainTabState, 
@@ -25,7 +26,17 @@ let MainTabReducer = Reducer<
             let network = NetworkRepositoryImpl(with: session)
             return HaviSearchHomeEnvironment(network: network) 
         }
-    )
+    ),
+    chosSearchReducer.pullback(
+      state: \.chosSearchState,
+      action: /MainTabAction.chosAction,
+      environment: { _ in
+        var environment: SearchEnvironment {
+          .init(appStoreUsecase: AppStoreUseCasePlatform(
+            apiNetworking: AlamofireAPINetworking.init(domainURL: "https://itunes.apple.com")))
+        }
+        return ChosSearchEnvironment(environment: environment, receiveQueue: .main)
+      })
     // 
     //
 )

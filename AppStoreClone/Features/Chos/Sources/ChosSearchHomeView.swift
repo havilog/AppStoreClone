@@ -10,7 +10,11 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct ChosSearchHomeView: View {
-  let store: Store<SearchState, SearchAction>
+  let store: Store<ChosSearchState, ChosSearchAction>
+
+  public init(store: Store<ChosSearchState, ChosSearchAction>) {
+      self.store = store
+  }
 
   public var body: some View {
     WithViewStore(self.store) { viewStore in
@@ -23,12 +27,9 @@ public struct ChosSearchHomeView: View {
             Spacer()
           }
           SearchBar(text: viewStore.binding(get: \.searchKeyword,
-                                            send: SearchAction.onSearchKeyword("")))
+                                            send: ChosSearchAction.onSearchKeyword("")))
 
           if !viewStore.recentlyKeyword.isEmpty {
-            List(viewStore.recentlyKeyword) { keyword in
-              Text(keyword)
-            }
           }
         }
       }
@@ -40,10 +41,4 @@ public struct ChosSearchHomeView: View {
 //extension ChosSearchHomeView {
 //  @ViewBuilder
 //  func
-//}
-
-//struct ChosSearchHomeView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    ChosSearchHomeView()
-//  }
 //}

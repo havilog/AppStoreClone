@@ -8,7 +8,8 @@
 
 import Foundation
 import Combine
+import ComposableArchitecture
 
 public protocol AppStoreUseCase {
-  var searchKeyword: (SearchDomain.Request.SearchRequest) -> AnyPublisher<SearchDomain.SearchResult, CompositingErrorDomain> { get }
+  var searchKeyword: (SearchDomain.Request.SearchRequest) -> Effect<SearchDomain.SearchResult, CompositingErrorDomain> { get }
 }

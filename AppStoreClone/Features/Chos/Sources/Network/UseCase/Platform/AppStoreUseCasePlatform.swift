@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ComposableArchitecture
 import Alamofire
 import Combine
 
@@ -23,7 +24,7 @@ public struct AppStoreUseCasePlatform {
 }
 
 extension AppStoreUseCasePlatform: AppStoreUseCase {
-  public var searchKeyword: (SearchDomain.Request.SearchRequest) -> AnyPublisher<SearchDomain.SearchResult, CompositingErrorDomain> {
+  public var searchKeyword: (SearchDomain.Request.SearchRequest) -> Effect<SearchDomain.SearchResult, CompositingErrorDomain> {
     { requestModel in
       
       let model = APIRequestModel(
@@ -39,6 +40,7 @@ extension AppStoreUseCasePlatform: AppStoreUseCase {
           return err
         }
         .eraseToAnyPublisher()
+        .eraseToEffect()
     }
   }
 }

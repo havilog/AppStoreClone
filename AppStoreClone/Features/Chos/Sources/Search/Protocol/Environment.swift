@@ -8,6 +8,10 @@
 
 import Foundation
 
-public protocol SearchEnvironmentType {
-  func getSearchResult(keyword: String) -> SearchDomain.SearchResult
+public struct SearchEnvironment {
+  var appStoreUsecase: AppStoreUseCase
+
+  public init(appStoreUsecase: AppStoreUseCase) {
+    self.appStoreUsecase = appStoreUsecase
+  }
 }

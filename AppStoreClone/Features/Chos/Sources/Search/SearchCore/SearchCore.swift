@@ -10,33 +10,49 @@ import Foundation
 import ComposableArchitecture
 import Combine
 
-struct SearchState: Equatable {
+public struct ChosSearchState: Equatable {
   var searchKeyword: String = ""
   var recentlyKeyword: [String] = []
-  var searchResults: [String]
+  var searchResults: [SearchDomain.AppData] = []
+
+  public init() {}
 }
 
-enum SearchAction: Equatable {
+public enum ChosSearchAction: Equatable {
   case onSearchKeyword(String)
-  case onTapResult
+  case onRecieveValue(Result<SearchDomain.SearchResult, CompositingErrorDomain>)
+  case onTapResult(SearchDomain.SearchResult)
 }
 
-struct SearchEnvironment {
-  var environment: SearchEnvironmentType
-  var receiveQueue: DispatchQueue {
-    DispatchQueue.main
+public struct ChosSearchEnvironment {
+  let environment: SearchEnvironment
+  let receiveQueue: DispatchQueue
+
+  public init(environment: SearchEnvironment, receiveQueue: DispatchQueue) {
+    self.environment = environment
+    self.receiveQueue = receiveQueue
   }
 }
 
-let searchReducer = Reducer<SearchState, SearchAction, SearchEnvironment> {
+public let chosSearchReducer = Reducer<ChosSearchState, ChosSearchAction, ChosSearchEnvironment> {
   state, action, environment in
   switch action {
   case let .onSearchKeyword(keyword):
-    return .init(value: .onTapResult)
-    break
+    struct SearchKeywordId: Hashable {}
+
+    return environment.environment.appStoreUsecase
+      .searchKeyword(.init(term: keyword, entity: "", country: "", lang: ""))
+      .catchToEffect(ChosSearchAction.onRecieveValue)
+      .cancellable(id: SearchKeywordId(), cancelInFlight: true)
 
   case .onTapResult:
-    return .init(value: .onTapResult)
-    break
+    return .none
+
+  case let .onRecieveValue(.failure(error)):
+    return .none
+
+  case let.onRecieveValue(.success(result)):
+    state.searchResults = result.results
+    return .none
   }
 }

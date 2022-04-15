@@ -24,7 +24,7 @@ class SessionManager {
   }()
 }
 
-struct AlamofireAPINetworking: APINetworking {
+public struct AlamofireAPINetworking: APINetworking {
   public let domainURL: String
   
   public init(domainURL: String) {
@@ -57,7 +57,7 @@ private struct AlamofireAPIProducer {
 }
 
 extension AlamofireAPINetworking: CombineAPINetworkRequestType {
-  func request(model: AlamofireRequestModelConvertable & DefaultParameterValue) -> AnyPublisher<Data, CompositingErrorDomain> {
+  public func request(model: AlamofireRequestModelConvertable & DefaultParameterValue) -> AnyPublisher<Data, CompositingErrorDomain> {
     let fullURL = model.makeCompositedURLPath(domainURL: domainURL)
     let parameters = model.makeCompositedRequestParameter()
     
