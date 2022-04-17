@@ -51,8 +51,7 @@ struct MainTabView: View {
             )
         )
             .tabItem { 
-                Image(systemName: "magnifyingglass")
-                Text("Havi")
+                Label("Havi", systemImage: "magnifyingglass")
             }
     }
     

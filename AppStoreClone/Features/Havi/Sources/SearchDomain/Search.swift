@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct SearchAPIResult: Decodable, Equatable {
+public struct SearchAPIResult: Decodable, Hashable {
     public let resultCount: Int
     public let results: [SearchResult]
 }
 
 extension SearchAPIResult {
-    public struct SearchResult: Decodable, Equatable {
+    public struct SearchResult: Decodable, Hashable {
         public let artworkUrl60: URL // -  60x60사이즈 로고
         public let artworkUrl100: URL // - 100x100사이즈 로고
         public let artworkUrl512: URL // - 512x512사이즈 로고
