@@ -50,9 +50,9 @@ struct MainTabView: View {
                 action: MainTabAction.haviAction
             )
         )
-            .tabItem { 
-                Label("Havi", systemImage: "magnifyingglass")
-            }
+        .tabItem { 
+            Label("Havi", systemImage: "magnifyingglass")
+        }
     }
     
     private var HeizelTab: some View {

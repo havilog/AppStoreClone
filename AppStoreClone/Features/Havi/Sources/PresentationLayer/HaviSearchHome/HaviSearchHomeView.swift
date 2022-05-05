@@ -16,9 +16,11 @@ public struct HaviSearchHomeView: View {
     private let gridItemLayout: [GridItem] = [GridItem(.flexible())]
     
     private let store: Store<HaviSearchHomeState, HaviSearchHomeAction>
+    @ObservedObject private var viewStore: ViewStore<HaviSearchHomeState, HaviSearchHomeAction>
     
     public init(store: Store<HaviSearchHomeState, HaviSearchHomeAction>) {
         self.store = store
+        self.viewStore = ViewStore(store)
         configureNavigation()
     }
     
@@ -29,41 +31,37 @@ public struct HaviSearchHomeView: View {
     }
     
     public var body: some View {
-        WithViewStore(self.store) { viewStore in
-            NavigationView {
-                searchResultListView
-            }
-            .searchable(
-                text: viewStore.binding(
-                    get: \.query, 
-                    send: HaviSearchHomeAction.searchKeywordChanged
-                ),
-                prompt: "게임, 앱, 스토리 등"
-            )
-            .foregroundColor(.white)
-            .onSubmit(of: .search) {
-                viewStore.send(.searchButtonTapped)
-            } 
+        NavigationView {
+            searchResultListView
         }
+        .navigationViewStyle(.stack)
+        .searchable(
+            text: viewStore.binding(
+                get: \.query, 
+                send: HaviSearchHomeAction.searchKeywordChanged
+            ),
+            prompt: "게임, 앱, 스토리 등"
+        ) // 여기 suggestion view 만들어야함
+        .foregroundColor(.white)
+        .onSubmit(of: .search) {
+            viewStore.send(.searchButtonTapped)
+        } 
     }
     
     private var searchResultListView: some View {
-        WithViewStore(store) { viewStore in
-            ZStack {
-                Color.black
-                    .ignoresSafeArea()
-                
-                ScrollView {
-                    LazyVGrid(columns: gridItemLayout) { 
-                        ForEach(viewStore.state.searchModel?.results ?? [], id: \.self) { result in
-                            SearchResultCell(item: result)
-                        }
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
+            
+            ScrollView {
+                LazyVGrid(columns: gridItemLayout) { 
+                    ForEach(viewStore.state.searchModel?.results ?? [], id: \.self) { result in
+                        SearchResultCell(item: result)
                     }
                 }
-                .navigationTitle("검색")
             }
-            
         }
+        .navigationTitle("검색")
     }
     
     private func SearchResultCell(item: SearchAPIResult.SearchResult) -> some View {

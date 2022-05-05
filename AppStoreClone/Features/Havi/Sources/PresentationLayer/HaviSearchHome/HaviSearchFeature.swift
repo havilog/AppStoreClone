@@ -6,11 +6,9 @@
 //  Copyright © 2022 havi. All rights reserved.
 //
 
-import SwiftUI
+import Core
 import Combine
 import Foundation
-
-import Core
 import ThirdPartyManager
 import ComposableArchitecture
 
