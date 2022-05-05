@@ -13,10 +13,9 @@ import ComposableArchitecture
 
 public struct HaviSearchHomeView: View {
     
-    @State private var searchQuery = ""
     private let gridItemLayout: [GridItem] = [GridItem(.flexible())]
     
-    public let store: Store<HaviSearchHomeState, HaviSearchHomeAction>
+    private let store: Store<HaviSearchHomeState, HaviSearchHomeAction>
     
     public init(store: Store<HaviSearchHomeState, HaviSearchHomeAction>) {
         self.store = store
@@ -32,17 +31,23 @@ public struct HaviSearchHomeView: View {
     public var body: some View {
         WithViewStore(self.store) { viewStore in
             NavigationView {
-                SearchResultListView    
+                searchResultListView
             }
-            .searchable(text: $searchQuery, prompt: "게임, 앱, 스토리 등")
+            .searchable(
+                text: viewStore.binding(
+                    get: \.query, 
+                    send: .searchKeywordChanged(query: viewStore.query)
+                ), 
+                prompt: "게임, 앱, 스토리 등"
+            )
             .foregroundColor(.white)
             .onSubmit(of: .search) {
-                viewStore.send(.searchButtonTapped(keyword: searchQuery))
+                viewStore.send(.searchButtonTapped)
             } 
         }
     }
     
-    private var SearchResultListView: some View {
+    private var searchResultListView: some View {
         WithViewStore(store) { viewStore in
             ZStack {
                 Color.black
@@ -63,24 +68,19 @@ public struct HaviSearchHomeView: View {
     
     private func SearchResultCell(item: SearchAPIResult.SearchResult) -> some View {
         HStack {
-            AsyncIconImageView(item: item)
+            asyncIconImageView(item: item)
             
-            TitleDescriptionStarVStack(item: item)
+            titleDescriptionStarVStack(item: item)
             
             Spacer()
             
-            Button("열기") { }
-                .frame(width: 70, height: 30, alignment: .center)
-                .background(Color(UIColor.darkGray))
-                .clipShape(Capsule())
-                .foregroundColor(.blue)
-
+            openButton
         }
         .padding(.horizontal, 30)
         .padding(.vertical, 15)
     }
     
-    private func AsyncIconImageView(item: SearchAPIResult.SearchResult) -> some View {
+    private func asyncIconImageView(item: SearchAPIResult.SearchResult) -> some View {
         AsyncImage(url: item.artworkUrl512) { image in
             image
                 .resizable()
@@ -92,7 +92,7 @@ public struct HaviSearchHomeView: View {
         .mask(RoundedRectangle(cornerRadius: 16))
     }
     
-    private func TitleDescriptionStarVStack(item: SearchAPIResult.SearchResult) -> some View {
+    private func titleDescriptionStarVStack(item: SearchAPIResult.SearchResult) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(item.trackName)
                 .font(.system(size: 17))
@@ -105,6 +105,14 @@ public struct HaviSearchHomeView: View {
                 .font(.system(size: 14))
                 .foregroundColor(Color(UIColor.darkGray))
         }
+    }
+    
+    private var openButton: some View {
+        Button("열기") { }
+            .frame(width: 70, height: 30, alignment: .center)
+            .background(Color(UIColor.darkGray))
+            .clipShape(Capsule())
+            .foregroundColor(.blue)
     }
 } 
 
