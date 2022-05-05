@@ -6,8 +6,9 @@
 //  Copyright © 2022 havi. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 import Combine
+import Foundation
 
 import Core
 import ThirdPartyManager
@@ -17,7 +18,9 @@ public struct HaviSearchHomeEnvironment {
     
     public let network: NetworkRepository
     
-    public init(network: NetworkRepository = NetworkRepositoryImpl(with: URLSession(configuration: .ephemeral))) {
+    public init(
+        network: NetworkRepository = NetworkRepositoryImpl(with: URLSession(configuration: .ephemeral))
+    ) {
         self.network = network
     }
     
@@ -32,29 +35,41 @@ public struct HaviSearchHomeEnvironment {
             .decode(type: SearchAPIResult.self, decoder: decoder)
             .mapError { _ in NetworkError.unableToDecode }
             .eraseToEffect()
+//        return ComposableArchitecture.Effect.task {
+//            let result = try await network.reqeust(
+//                with: Endpoint.searchApp(term: term), 
+//                for: SearchAPIResult.self
+//            )
+//            return result
+//        }
     }
+    
+//    public func searchRelatedKeyword(
+//        term: String,
+//        decoder: JSONDecoder
+//    ) -> Effect<SearchAPIResult, NetworkError> {
+//        
+//    }
 }
 
 public enum HaviSearchHomeAction: Equatable {
-    case searchButtonTapped(keyword: String)
+    case searchKeywordChanged(query: String)
+    case searchButtonTapped
     case searchDataLoaded(Result<SearchAPIResult, NetworkError>)
 }
 
 public struct HaviSearchHomeState: Equatable {
     var searchModel: SearchAPIResult?
+    var query: String = ""
     
     public init() { }
 }
 
-public let haviSearchHomeReducer = Reducer<
-    HaviSearchHomeState, 
-        HaviSearchHomeAction, 
-        HaviSearchHomeEnvironment
->.combine(
+public let haviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAction, HaviSearchHomeEnvironment>.combine(
     Reducer { state, action, environment in
         switch action {
-        case let .searchButtonTapped(term):
-            return environment.searchRequest(term: term, decoder: .init())
+        case .searchButtonTapped:
+            return environment.searchRequest(term: state.query, decoder: .init())
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(HaviSearchHomeAction.searchDataLoaded)
@@ -62,7 +77,6 @@ public let haviSearchHomeReducer = Reducer<
         case let .searchDataLoaded(result):
             switch result {
             case let .success(searchResult):
-                print("success")
                 state.searchModel = searchResult
                 
             case let .failure(error):
@@ -70,9 +84,9 @@ public let haviSearchHomeReducer = Reducer<
             }
             return .none
             
-//        case let .searchKeywordChanged(keyword):
-//            return .none
+        case let .searchKeywordChanged(query):
+            state.query = query
+            return .none
         }
     }
 )
-//    .debug()
