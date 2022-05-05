@@ -51,7 +51,12 @@ struct MainTabView: View {
     }
     
     private var HeizelTab: some View {
-        HeizelSearchHomeView()
+        HeizelSearchHomeView(
+            store: store.scope(
+                state: \.heizelSearchState,
+                action: MainTabAction.heizelAction
+            )
+        )
             .tabItem { 
                 Image(systemName: "magnifyingglass")
                 Text("Heizel")

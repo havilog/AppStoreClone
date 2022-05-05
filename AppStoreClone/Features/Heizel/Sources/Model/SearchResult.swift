@@ -8,12 +8,17 @@
 
 import Foundation
 
-struct SearchResult: Decodable {
+public struct SearchResult: Decodable, Equatable {
     let resultCount: Int
     let results: [SearchItemResult]
+
+    static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
+        return lhs.resultCount == rhs.resultCount &&
+        lhs.results == rhs.results
+    }
 }
 
-struct SearchItemResult: Decodable {
+public struct SearchItemResult: Decodable, Equatable {
     let wrapperType: String
     let kind: String
     let artistId: Int

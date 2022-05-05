@@ -10,9 +10,10 @@ import ThirdPartyManager
 import ComposableArchitecture
 
 import Havi
+import Heizel
 
 struct MainTabState: Equatable {
     var haviSearchState: HaviSearchHomeState = .init()
     // chos
-    // heizel
+    var heizelSearchState: HeizelSearchHomeState = .init()
 }
