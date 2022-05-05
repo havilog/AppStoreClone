@@ -9,8 +9,25 @@
 import Foundation
 import ThirdPartyManager
 import ComposableArchitecture
+import Core
 
 public struct HeizelSearchHomeEnvironment {
-    var mainQueue: AnySchedulerOf<DispatchQueue>
-    var search: (String) -> Effect<SearchResult, Error>
+    public let network: NetworkRepository
+
+    public init(network: NetworkRepository = NetworkRepositoryImpl(with: URLSession(configuration: .ephemeral))) {
+        self.network = network
+    }
+
+    public func search(_ term: String) -> Effect<SearchResult, Error> {
+        return URLSession.shared
+            .dataTaskPublisher(for: try! Endpoint.searchApp(term: term).asURLRequest())
+            .mapError { _ in NetworkError.dataTaskFailed }
+            .map { data, _ in data }
+            .decode(type: SearchResult.self, decoder: JSONDecoder())
+            .mapError { error in
+                print(error)
+                return NetworkError.unableToDecode
+            }
+            .eraseToEffect()
+    }
 }

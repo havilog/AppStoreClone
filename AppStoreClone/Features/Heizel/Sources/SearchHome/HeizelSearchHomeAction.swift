@@ -9,6 +9,7 @@
 import Foundation
 import ThirdPartyManager
 import ComposableArchitecture
+import Core
 
 public enum HeizelSearchHomeAction {
     case searchButtonTapped(term: String)

@@ -10,18 +10,20 @@ import Foundation
 import ThirdPartyManager
 import ComposableArchitecture
 
-let heizelSearchHomeReducer = Reducer<HeizelSearchHomeState, HeizelSearchHomeAction, HeizelSearchHomeEnvironment> { state, action, environment in
-    switch action {
-    case .searchButtonTapped(let term):
-        return environment.search(term)
-            .receive(on: environment.mainQueue)
-            .catchToEffect()
-            .map(HeizelSearchHomeAction.searchResultResponse)
-    case .searchResultResponse(.success(let result)):
-        state.searchResult = result
-        return .none
-    case .searchResultResponse(.failure(let error)):
-        state.error = error
-        return .none
+public let heizelSearchHomeReducer = Reducer<HeizelSearchHomeState, HeizelSearchHomeAction, HeizelSearchHomeEnvironment>.combine(
+        Reducer { state, action, environment in
+        switch action {
+        case .searchButtonTapped(let term):
+            return environment.search(term)
+                .receive(on: DispatchQueue.main)
+                .catchToEffect()
+                .map(HeizelSearchHomeAction.searchResultResponse)
+        case .searchResultResponse(.success(let result)):
+            state.searchResult = result
+            return .none
+        case .searchResultResponse(.failure(let error)):
+            state.error = error
+            return .none
+        }
     }
-}
+)

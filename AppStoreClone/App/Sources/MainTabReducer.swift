@@ -10,6 +10,7 @@ import ThirdPartyManager
 import ComposableArchitecture
 
 import Havi
+import Heizel
 import Core
 
 let MainTabReducer = Reducer<
@@ -25,8 +26,15 @@ let MainTabReducer = Reducer<
             let network = NetworkRepositoryImpl(with: session)
             return HaviSearchHomeEnvironment(network: network) 
         }
+    ),
+    heizelSearchHomeReducer.pullback(
+        state: \.heizelSearchState,
+        action: /MainTabAction.heizelAction,
+        environment: { _ in
+            let session = URLSession(configuration: .default)
+            let network = NetworkRepositoryImpl(with: session)
+            return HeizelSearchHomeEnvironment(network: network)
+        }
     )
-    // 
-    //
 )
 //    .debug()
