@@ -36,8 +36,8 @@ public struct HaviSearchHomeView: View {
             .searchable(
                 text: viewStore.binding(
                     get: \.query, 
-                    send: .searchKeywordChanged(query: viewStore.query)
-                ), 
+                    send: HaviSearchHomeAction.searchKeywordChanged
+                ),
                 prompt: "게임, 앱, 스토리 등"
             )
             .foregroundColor(.white)
@@ -122,7 +122,7 @@ struct HaviSearchHomeView_Previews: PreviewProvider {
             store: .init(
                 initialState: HaviSearchHomeState(), 
                 reducer: haviSearchHomeReducer,
-                environment: HaviSearchHomeEnvironment()
+                environment: HaviSearchHomeEnvironment(searchClient: .live)
             )
         )
     }

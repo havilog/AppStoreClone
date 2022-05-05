@@ -15,47 +15,17 @@ import ThirdPartyManager
 import ComposableArchitecture
 
 public struct HaviSearchHomeEnvironment {
+    var searchClient: SearchClient
     
-    public let network: NetworkRepository
-    
-    public init(
-        network: NetworkRepository = NetworkRepositoryImpl(with: URLSession(configuration: .ephemeral))
-    ) {
-        self.network = network
+    public init(searchClient: SearchClient) {
+        self.searchClient = searchClient
     }
-    
-    public func searchRequest(
-        term: String,
-        decoder: JSONDecoder
-    ) -> Effect<SearchAPIResult, NetworkError> {
-        return URLSession.shared
-            .dataTaskPublisher(for: try! Endpoint.searchApp(term: term).asURLRequest())
-            .mapError { _ in NetworkError.dataTaskFailed }
-            .map { data, _ in data }
-            .decode(type: SearchAPIResult.self, decoder: decoder)
-            .mapError { _ in NetworkError.unableToDecode }
-            .eraseToEffect()
-//        return ComposableArchitecture.Effect.task {
-//            let result = try await network.reqeust(
-//                with: Endpoint.searchApp(term: term), 
-//                for: SearchAPIResult.self
-//            )
-//            return result
-//        }
-    }
-    
-//    public func searchRelatedKeyword(
-//        term: String,
-//        decoder: JSONDecoder
-//    ) -> Effect<SearchAPIResult, NetworkError> {
-//        
-//    }
 }
 
 public enum HaviSearchHomeAction: Equatable {
-    case searchKeywordChanged(query: String)
+    case searchKeywordChanged(String)
     case searchButtonTapped
-    case searchDataLoaded(Result<SearchAPIResult, NetworkError>)
+    case searchDataLoaded(Result<SearchAPIResult, SearchClient.SearchFailure>)
 }
 
 public struct HaviSearchHomeState: Equatable {
@@ -69,7 +39,8 @@ public let haviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAc
     Reducer { state, action, environment in
         switch action {
         case .searchButtonTapped:
-            return environment.searchRequest(term: state.query, decoder: .init())
+            return environment.searchClient
+                .searchQuery(state.query)
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(HaviSearchHomeAction.searchDataLoaded)
