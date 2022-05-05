@@ -33,6 +33,7 @@ public enum HTTPTask {
 }
 
 public enum NetworkError: Error {
+    case unknown
     case invalidUrlRequest
     
     case dataTaskFailed

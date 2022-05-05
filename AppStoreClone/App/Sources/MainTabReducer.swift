@@ -24,7 +24,7 @@ let MainTabReducer = Reducer<
         environment: { _ in
             let session = URLSession(configuration: .default)
             let network = NetworkRepositoryImpl(with: session)
-            return HaviSearchHomeEnvironment(network: network) 
+            return HaviSearchHomeEnvironment(searchClient: .live) 
         }
     ),
     chosSearchReducer.pullback(
