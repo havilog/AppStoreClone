@@ -31,11 +31,10 @@ let MainTabReducer = Reducer<
       state: \.chosSearchState,
       action: /MainTabAction.chosAction,
       environment: { _ in
-        var environment: SearchEnvironment {
-          .init(appStoreUsecase: AppStoreUseCasePlatform(
-            apiNetworking: AlamofireAPINetworking.init(domainURL: "https://itunes.apple.com")))
-        }
-        return ChosSearchEnvironment(environment: environment, receiveQueue: .main)
+        .init(
+          appStoreUsecase: AppStoreUseCasePlatform(
+            apiNetworking: AlamofireAPINetworking.init(domainURL: "https://itunes.apple.com")),
+          receiveQueue: DispatchQueue.main)
       })
     // 
     //

@@ -14,22 +14,24 @@ public struct ChosSearchState: Equatable {
   var searchKeyword: String = ""
   var recentlyKeyword: [String] = []
   var searchResults: [SearchDomain.AppData] = []
+  var filteredRecentlyKeyword: [String] = []
 
   public init() {}
 }
 
 public enum ChosSearchAction: Equatable {
   case onSearchKeyword(String)
+  case onChangedSearchKeyword(String)
   case onRecieveValue(Result<SearchDomain.SearchResult, CompositingErrorDomain>)
-  case onTapResult(SearchDomain.SearchResult)
+  case onTapResult(SearchDomain.AppData)
 }
 
 public struct ChosSearchEnvironment {
-  let environment: SearchEnvironment
+  let appStoreUsecase: AppStoreUseCase
   let receiveQueue: DispatchQueue
 
-  public init(environment: SearchEnvironment, receiveQueue: DispatchQueue) {
-    self.environment = environment
+  public init(appStoreUsecase: AppStoreUseCase, receiveQueue: DispatchQueue) {
+    self.appStoreUsecase = appStoreUsecase
     self.receiveQueue = receiveQueue
   }
 }
@@ -37,15 +39,33 @@ public struct ChosSearchEnvironment {
 public let chosSearchReducer = Reducer<ChosSearchState, ChosSearchAction, ChosSearchEnvironment> {
   state, action, environment in
   switch action {
+
+  case let .onChangedSearchKeyword(keyword):
+    ( keyword.isEmpty )
+    ? ( state.filteredRecentlyKeyword = [] )
+    : ( state.filteredRecentlyKeyword = state.recentlyKeyword.filter{ $0.contains(keyword) } )
+
+    state.searchKeyword = keyword
+
+    return .none
+
   case let .onSearchKeyword(keyword):
     struct SearchKeywordId: Hashable {}
 
-    return environment.environment.appStoreUsecase
-      .searchKeyword(.init(term: keyword, entity: "", country: "", lang: ""))
+    state.searchKeyword = keyword
+
+    guard !state.recentlyKeyword.contains(keyword) else { return .none }
+    state.recentlyKeyword.append(keyword)
+
+    state.searchResults = []
+
+    return environment.appStoreUsecase
+      .searchKeyword(.init(term: state.searchKeyword, entity: "software", country: "KR", lang: "ko_KR"))
       .catchToEffect(ChosSearchAction.onRecieveValue)
       .cancellable(id: SearchKeywordId(), cancelInFlight: true)
 
-  case .onTapResult:
+  case let .onTapResult(data):
+
     return .none
 
   case let .onRecieveValue(.failure(error)):

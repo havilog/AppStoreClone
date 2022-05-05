@@ -20,7 +20,7 @@ public enum SearchDomain {
     public let results: [AppData]
   }
   
-  public struct AppData: Equatable, Codable {
+  public struct AppData: Equatable, Codable, Identifiable {
     public init(
       artworkUrl60: String,
       artworkUrl100: String,
@@ -29,15 +29,15 @@ public enum SearchDomain {
       supportedDevices: [String],
       minimumOsVersion: String,
       trackName: String,
-      averageUserRating: String,
-      averageUserRatingForCurrentVersion: String,
+      averageUserRating: Double,
+      averageUserRatingForCurrentVersion: Double,
       contentAdvisoryRating: String,
       userRatingCount: Int,
-      releaseNotes: String)
+      releaseNotes: String?)
     {
       self.artworkUrl60 = artworkUrl60
       self.artworkUrl100 = artworkUrl100
-      self.artwrokUrl512 = artwrokUrl512
+      self.artworkUrl512 = artwrokUrl512
       self.screenshotUrls = screenshotUrls
       self.supportedDevices = supportedDevices
       self.minimumOsVersion = minimumOsVersion
@@ -51,16 +51,20 @@ public enum SearchDomain {
     
     public let artworkUrl60: String
     public let artworkUrl100: String
-    public let artwrokUrl512: String
+    public let artworkUrl512: String
     public let screenshotUrls: [String]
     public let supportedDevices: [String]
     public let minimumOsVersion: String
     public let trackName: String
-    public let averageUserRating: String
-    public let averageUserRatingForCurrentVersion: String
+    public let averageUserRating: Double
+    public let averageUserRatingForCurrentVersion: Double
     public let contentAdvisoryRating: String
     public let userRatingCount: Int
-    public let releaseNotes: String
+    public let releaseNotes: String?
+
+    public var id: String {
+      artworkUrl60 + trackName
+    }
   }
 }
 
