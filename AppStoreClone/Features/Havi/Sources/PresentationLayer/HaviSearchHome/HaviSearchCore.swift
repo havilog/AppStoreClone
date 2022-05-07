@@ -35,9 +35,16 @@ public struct HaviSearchHomeState: Equatable {
     struct SearchHistory: Identifiable, Equatable {
         var id: String
     }
+    
+    enum ViewState {
+        case result
+        case suggestion
+    }
+    
     var searchResults: [SearchAPIResult.SearchResult] = []
     var query: String = ""
     var searchHistory: [SearchHistory] = []
+    var viewState: ViewState = .suggestion
     
     public init() { }
 }
@@ -53,6 +60,7 @@ public let haviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAc
                 .map(HaviSearchHomeAction.searchDataLoaded)
             
         case let .searchDataLoaded(.success(searchResult)):
+            state.viewState = .result
             state.searchResults = searchResult.results
             
             let history = HaviSearchHomeState.SearchHistory(id: state.query)
@@ -60,7 +68,7 @@ public let haviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAc
                 state.searchHistory.remove(at: existingHistoryIndex)
             }
             
-            state.searchHistory.append(history)
+            state.searchHistory.insert(history, at: .zero)
             return .none
             
         case let .searchDataLoaded(.failure(error)):
@@ -68,6 +76,7 @@ public let haviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAc
             return .none
             
         case let .searchKeywordChanged(query):
+            state.viewState = .suggestion
             state.query = query
             return .none
         }

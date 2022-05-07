@@ -25,7 +25,13 @@ public struct HaviSearchHomeView: View {
     
     public var body: some View {
         NavigationView {
-            searchResultListView
+            switch viewStore.viewState {
+            case .suggestion:
+                suggestionsView
+                
+            case .result:
+                searchResultListView
+            }
         }
         .navigationViewStyle(.stack)
         .searchable(
@@ -51,11 +57,19 @@ public struct HaviSearchHomeView: View {
         .navigationTitle("검색")
     }
     
-//    private func suggestionsView() -> some View {
-//        ForEach(viewStore.searchHistory) { history in
-//            Text(history.id)
-//        }
-//    }
+    private var suggestionsView: some View {
+        List {
+            ForEach(viewStore.searchHistory) { history in
+                Text(history.id)
+                    .onTapGesture {
+                        viewStore.send(.searchKeywordChanged(history.id))
+                        viewStore.send(.searchButtonTapped)
+                    }
+            }
+        }
+        .listStyle(.plain)
+        .navigationTitle("검색")
+    }
     
     private func searchResultCell(item: SearchAPIResult.SearchResult) -> some View {
         HStack {
