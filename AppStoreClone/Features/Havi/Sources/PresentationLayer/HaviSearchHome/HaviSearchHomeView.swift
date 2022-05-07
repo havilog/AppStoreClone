@@ -34,7 +34,7 @@ public struct HaviSearchHomeView: View {
                 send: HaviSearchHomeAction.searchKeywordChanged
             ),
             prompt: "게임, 앱, 스토리 등"
-        ) // 여기 suggestion view 만들어야함
+        )
         .onSubmit(of: .search) {
             viewStore.send(.searchButtonTapped)
         } 
@@ -43,15 +43,21 @@ public struct HaviSearchHomeView: View {
     private var searchResultListView: some View {
         ScrollView {
             LazyVGrid(columns: gridItemLayout) { 
-                ForEach(viewStore.state.searchModel?.results ?? [], id: \.self) { result in
-                    SearchResultCell(item: result)
+                ForEach(viewStore.state.searchResults, id: \.self) { result in
+                    searchResultCell(item: result)
                 }
             }
         }
         .navigationTitle("검색")
     }
     
-    private func SearchResultCell(item: SearchAPIResult.SearchResult) -> some View {
+//    private func suggestionsView() -> some View {
+//        ForEach(viewStore.searchHistory) { history in
+//            Text(history.id)
+//        }
+//    }
+    
+    private func searchResultCell(item: SearchAPIResult.SearchResult) -> some View {
         HStack {
             asyncIconImageView(item: item)
             
@@ -106,7 +112,7 @@ struct HaviSearchHomeView_Previews: PreviewProvider {
             store: .init(
                 initialState: HaviSearchHomeState(), 
                 reducer: haviSearchHomeReducer,
-                environment: HaviSearchHomeEnvironment(searchClient: .live)
+                environment: HaviSearchHomeEnvironment(searchClient: .live, mainQueue: .main)
             )
         )
     }

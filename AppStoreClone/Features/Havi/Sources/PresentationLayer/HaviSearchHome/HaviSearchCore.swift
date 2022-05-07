@@ -14,9 +14,14 @@ import ComposableArchitecture
 
 public struct HaviSearchHomeEnvironment {
     var searchClient: SearchClient
+    var mainQueue: AnySchedulerOf<DispatchQueue>
     
-    public init(searchClient: SearchClient) {
+    public init(
+        searchClient: SearchClient,
+        mainQueue: AnySchedulerOf<DispatchQueue>
+    ) {
         self.searchClient = searchClient
+        self.mainQueue = mainQueue
     }
 }
 
@@ -27,8 +32,12 @@ public enum HaviSearchHomeAction: Equatable {
 }
 
 public struct HaviSearchHomeState: Equatable {
-    var searchModel: SearchAPIResult?
+    struct SearchHistory: Identifiable, Equatable {
+        var id: String
+    }
+    var searchResults: [SearchAPIResult.SearchResult] = []
     var query: String = ""
+    var searchHistory: [SearchHistory] = []
     
     public init() { }
 }
@@ -43,14 +52,19 @@ public let haviSearchHomeReducer = Reducer<HaviSearchHomeState, HaviSearchHomeAc
                 .catchToEffect()
                 .map(HaviSearchHomeAction.searchDataLoaded)
             
-        case let .searchDataLoaded(result):
-            switch result {
-            case let .success(searchResult):
-                state.searchModel = searchResult
-                
-            case let .failure(error):
-                print(error)
+        case let .searchDataLoaded(.success(searchResult)):
+            state.searchResults = searchResult.results
+            
+            let history = HaviSearchHomeState.SearchHistory(id: state.query)
+            if let existingHistoryIndex = state.searchHistory.firstIndex(of: history) {
+                state.searchHistory.remove(at: existingHistoryIndex)
             }
+            
+            state.searchHistory.append(history)
+            return .none
+            
+        case let .searchDataLoaded(.failure(error)):
+            print(error)
             return .none
             
         case let .searchKeywordChanged(query):
