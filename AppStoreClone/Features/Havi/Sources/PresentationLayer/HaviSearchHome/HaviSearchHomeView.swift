@@ -21,13 +21,6 @@ public struct HaviSearchHomeView: View {
     public init(store: Store<HaviSearchHomeState, HaviSearchHomeAction>) {
         self.store = store
         self.viewStore = ViewStore(store)
-        configureNavigation()
-    }
-    
-    private func configureNavigation() {
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
-        UINavigationBar.appearance().isTranslucent = true
     }
     
     public var body: some View {
@@ -42,22 +35,16 @@ public struct HaviSearchHomeView: View {
             ),
             prompt: "게임, 앱, 스토리 등"
         ) // 여기 suggestion view 만들어야함
-        .foregroundColor(.white)
         .onSubmit(of: .search) {
             viewStore.send(.searchButtonTapped)
         } 
     }
     
     private var searchResultListView: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-            
-            ScrollView {
-                LazyVGrid(columns: gridItemLayout) { 
-                    ForEach(viewStore.state.searchModel?.results ?? [], id: \.self) { result in
-                        SearchResultCell(item: result)
-                    }
+        ScrollView {
+            LazyVGrid(columns: gridItemLayout) { 
+                ForEach(viewStore.state.searchModel?.results ?? [], id: \.self) { result in
+                    SearchResultCell(item: result)
                 }
             }
         }
@@ -94,21 +81,20 @@ public struct HaviSearchHomeView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text(item.trackName)
                 .font(.system(size: 17))
+                .foregroundColor(Color(UIColor.black))
             
-            Text("description 찾아야함")
+            Text(item.trackName)
                 .font(.system(size: 14))
                 .foregroundColor(Color(UIColor.darkGray))
             
-            Text("별 그려야함")
-                .font(.system(size: 14))
-                .foregroundColor(Color(UIColor.darkGray))
+            FiveStarView(rating: item.averageUserRating, width: 15, height: 15)
         }
     }
     
     private var openButton: some View {
         Button("열기") { }
             .frame(width: 70, height: 30, alignment: .center)
-            .background(Color(UIColor.darkGray))
+            .background(Color(UIColor.systemGray5))
             .clipShape(Capsule())
             .foregroundColor(.blue)
     }
