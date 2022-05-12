@@ -183,6 +183,7 @@ fileprivate struct SearchComponent {
           VStack(alignment: .leading) {
             Text(appData.trackName)
               .bold()
+              .multilineTextAlignment(.leading)
 
             Text(appData.trackName)
               .foregroundColor(.gray)
@@ -193,10 +194,24 @@ fileprivate struct SearchComponent {
           }
 
           Spacer()
+
+          renderOpenAppButton { }
         }
       }
       .padding()
     }
+
+  private static func renderOpenAppButton(onTapAction: @escaping () -> Void) -> some View {
+    Button(action: {}) {
+      Text("열기")
+        .font(.system(size: 14))
+        .fontWeight(.bold)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
+    }
+    .background(Color.init(uiColor: .systemGray6))
+    .clipShape(Capsule(style: .circular))
+  }
 }
 
 enum SearchViewState {

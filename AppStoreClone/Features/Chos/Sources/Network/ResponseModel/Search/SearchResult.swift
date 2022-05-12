@@ -33,7 +33,8 @@ public enum SearchDomain {
       averageUserRatingForCurrentVersion: Double,
       contentAdvisoryRating: String,
       userRatingCount: Int,
-      releaseNotes: String?)
+      releaseNotes: String?,
+      sellerName: String)
     {
       self.artworkUrl60 = artworkUrl60
       self.artworkUrl100 = artworkUrl100
@@ -47,6 +48,7 @@ public enum SearchDomain {
       self.contentAdvisoryRating = contentAdvisoryRating
       self.userRatingCount = userRatingCount
       self.releaseNotes = releaseNotes
+      self.sellerName = sellerName
     }
     
     public let artworkUrl60: String
@@ -61,6 +63,7 @@ public enum SearchDomain {
     public let contentAdvisoryRating: String
     public let userRatingCount: Int
     public let releaseNotes: String?
+    public let sellerName: String
 
     public var id: String {
       artworkUrl60 + trackName
@@ -83,5 +86,24 @@ extension SearchDomain {
         self.lang = lang
       }
     }
+  }
+}
+
+extension SearchDomain.AppData {
+  static func defaultValue() -> Self {
+    .init(
+      artworkUrl60: "",
+      artworkUrl100: "",
+      artwrokUrl512: "",
+      screenshotUrls: [],
+      supportedDevices: [],
+      minimumOsVersion: "",
+      trackName: "",
+      averageUserRating: .zero,
+      averageUserRatingForCurrentVersion: .zero,
+      contentAdvisoryRating: "",
+      userRatingCount: .zero,
+      releaseNotes: .none,
+      sellerName: "")
   }
 }
